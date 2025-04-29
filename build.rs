@@ -38,11 +38,9 @@ fn main() -> Result<(), Box<dyn Error>> {
         .flag("-nostdlib")
         .flag("-ffreestanding")
         .flag("-fno-stack-protector")
-        .flag("-fno-stack-check");
-
-    if cfg!(target_arch = "x86_64") || cfg!(target_arch = "x86") {
-        cc.flag("-mno-red-zone");
-    }
+        .flag("-fno-stack-check")
+        .flag("-mno-red-zone")
+        .flag("-mcmodel=kernel");
 
     cc.compile("flanterm");
 
