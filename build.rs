@@ -40,7 +40,9 @@ fn main() -> Result<(), Box<dyn Error>> {
         .flag("-fno-stack-protector")
         .flag("-fno-stack-check")
         .flag("-mno-red-zone")
-        .flag("-mcmodel=kernel");
+        .flag("-mcmodel=kernel")
+        .flag("-fno-PIC")
+        .flag("-fno-PIE");
 
     cc.compile("flanterm");
 
