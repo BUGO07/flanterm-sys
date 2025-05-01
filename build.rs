@@ -33,16 +33,22 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     cc.files(sources)
         .define("FLANTERM_FB_DISABLE_BUMP_ALLOC", "") // reduces binary size but needs memory allocator
-        // .flag("-std=c11")
-        // .flag("-mgeneral-regs-only")
+        .flag("-mgeneral-regs-only")
         .flag("-nostdlib")
         .flag("-ffreestanding")
         .flag("-fno-stack-protector")
-        .flag("-fno-stack-check")
-        .flag("-mno-red-zone")
-        .flag("-mcmodel=kernel")
         .flag("-fno-PIC")
         .flag("-fno-PIE");
+
+    let target = env::var("TARGET").unwrap();
+
+    if target.contains("x86_64") || target.contains("i686") {
+        cc.flag("-mno-red-zone").flag("-mcmodel=kernel");
+    }
+
+    if target.contains("aarch64") {
+        cc.compiler("aarch64-linux-gnu-gcc");
+    }
 
     cc.compile("flanterm");
 
