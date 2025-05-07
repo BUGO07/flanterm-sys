@@ -6,4 +6,4 @@ links = "flanterm"
 
 [build-dependencies]
 bindgen = "0.71.1"
-cc = "1.1.18"
+cc = "1.2.21"
