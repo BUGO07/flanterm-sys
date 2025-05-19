@@ -31,7 +31,8 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let mut cc = cc::Build::new();
 
-    cc.files(sources)
+    cc.compiler("clang")
+        .files(sources)
         .define("FLANTERM_FB_DISABLE_BUMP_ALLOC", "") // reduces binary size but needs memory allocator
         .flag("-mgeneral-regs-only")
         .flag("-nostdlib")
@@ -44,10 +45,6 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     if target.contains("x86_64") || target.contains("i686") {
         cc.flag("-mno-red-zone").flag("-mcmodel=kernel");
-    }
-
-    if target.contains("aarch64") {
-        cc.compiler("aarch64-linux-gnu-gcc");
     }
 
     cc.compile("flanterm");
