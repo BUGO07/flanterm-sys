@@ -34,7 +34,6 @@ fn main() -> Result<(), Box<dyn Error>> {
     cc.compiler("clang")
         .files(sources)
         .define("FLANTERM_FB_DISABLE_BUMP_ALLOC", "") // reduces binary size but needs memory allocator
-        .flag("-mgeneral-regs-only")
         .flag("-nostdlib")
         .flag("-ffreestanding")
         .flag("-fno-stack-protector")
@@ -45,6 +44,10 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     if target.contains("x86_64") || target.contains("i686") {
         cc.flag("-mno-red-zone").flag("-mcmodel=kernel");
+    }
+
+    if !target.contains("riscv64") {
+        cc.flag("-mgeneral-regs-only");
     }
 
     cc.compile("flanterm");
