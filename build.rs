@@ -46,7 +46,9 @@ fn main() -> Result<(), Box<dyn Error>> {
         cc.flag("-mno-red-zone").flag("-mcmodel=kernel");
     }
 
-    if !target.contains("riscv64") {
+    if target.contains("riscv64") {
+        cc.flag("-march=rv64gc").flag("-mabi=lp64d");
+    } else {
         cc.flag("-mgeneral-regs-only");
     }
 
